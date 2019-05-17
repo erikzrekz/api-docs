@@ -1,0 +1,53 @@
+# Reference
+
+## Currencies
+
+This is a list of currency IDs. They are used in b messages in the account notifications websockets channel, and can also be retrieved using the returnCurrencies REST call.
+
+<%
+  require 'json'
+  require 'net/http'
+  def getCurrencyReference(url)
+    uri = URI(url)
+    response = Net::HTTP.get(uri)
+    return JSON.parse(response)
+  end
+ %>
+
+<table>
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Currency</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% getCurrencyReference('https://poloniex.com/public?command=returnCurrencies').each do |key, val| %>
+      <tr>
+        <td><%= val.fetch('id') %></td>
+        <td><%= key %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+## Currency Pair IDs
+
+This is a list of IDs for currency pairs. They serve as the channel IDs for price aggregated books, and are used in returned data from a few other websocket channels as well.
+
+<table>
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Currency</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% getCurrencyReference('https://poloniex.com/public?command=returnTicker').each do |key, val| %>
+      <tr>
+        <td><%= val.fetch('id') %></td>
+        <td><%= key %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,6 +1,7 @@
 # Unique header generation
 require 'middleman-core/renderers/redcarpet'
 require 'digest'
+
 class UniqueHeadCounter < Middleman::Renderers::MiddlemanRedcarpetHTML
   def initialize
     super
@@ -20,5 +21,10 @@ class UniqueHeadCounter < Middleman::Renderers::MiddlemanRedcarpetHTML
       friendly_text += "-#{@head_count[friendly_text]}"
     end
     return "<h#{header_level} id='#{friendly_text}'>#{text}</h#{header_level}>"
+  end
+  def preprocess(full_document)
+    full_document = super(full_document) if defined?(super)
+    full_document = ERB.new(full_document).result(binding)
+    return full_document
   end
 end

@@ -11,7 +11,7 @@ includes:
   - http-public
   - http-private
   - websockets
-  - reference
+  - reference.md.erb
   - changelog
 
 search: true
